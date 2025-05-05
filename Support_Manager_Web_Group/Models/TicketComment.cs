@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Support_Manager_Web_Group.Models // Ensure namespace matches project name
+namespace Support_Manager_Web_Group.Models 
 {
     // Represents a single comment on a support ticket
     public class TicketComment

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Support_Manager_Web_Group.Models // Ensure namespace matches project name
+namespace Support_Manager_Web_Group.Models
 {
     // Custom user inheriting IdentityUser (string Id)
     public class ApplicationUser : IdentityUser
@@ -15,7 +15,7 @@ namespace Support_Manager_Web_Group.Models // Ensure namespace matches project n
 
         [StringLength(50)]
         [Display(Name = "Employee ID")]
-        public string? EmployeeID { get; set; } // Optional
+        public string? EmployeeID { get; set; } 
 
         // Navigation properties needed for EF Core relationships
         [InverseProperty("Submitter")]

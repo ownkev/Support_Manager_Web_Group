@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Support_Manager_Web_Group.Models // Ensure namespace matches
+namespace Support_Manager_Web_Group.Models 
 {
     public class Ticket
     {
@@ -58,7 +58,7 @@ namespace Support_Manager_Web_Group.Models // Ensure namespace matches
         [ForeignKey("PriorityID")]
         public virtual TicketPriority Priority { get; set; }
 
-        // *** ADDED Navigation Property for Comments ***
+        // ***Navigation Property for Comments ***
         public virtual ICollection<TicketComment> Comments { get; set; }
 
         public Ticket()

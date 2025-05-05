@@ -45,9 +45,9 @@ else
                         <span asp-validation-for="Ticket.Category" class="text-danger"></span>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label asp-for="Ticket.PriorityID" class="form-label">Priority</label> @* No longer required *@
+                        <label asp-for="Ticket.PriorityID" class="form-label">Priority</label> 
                         <select asp-for="Ticket.PriorityID" class="form-select" asp-items="Model.PriorityList">
-                            <option value="0">-- Select Priority --</option> @* Ensure value matches default in PageModel *@
+                            <option value="0">-- Select Priority --</option> 
                         </select>
                         <span asp-validation-for="Ticket.PriorityID" class="text-danger"></span>
                     </div>
@@ -65,7 +65,7 @@ else
                     </div>
                 </div>
 
-                @* --- ADDED Comment Field --- *@
+                @* Comment Field *@
                 <div class="mb-3">
                     <label asp-for="NewCommentText" class="form-label"></label>
                     <textarea asp-for="NewCommentText" class="form-control" rows="4" placeholder="Add an optional comment about the changes made..."></textarea>

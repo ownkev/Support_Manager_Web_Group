@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => {
-    options.SignIn.RequireConfirmedAccount = false; // Keep false for easier testing
+    options.SignIn.RequireConfirmedAccount = false; 
     options.Password.RequireDigit = false; // Simple password for testing
     options.Password.RequireLowercase = false;
     options.Password.RequireUppercase = false;
@@ -41,8 +41,8 @@ else { app.UseExceptionHandler("/Error"); app.UseHsts(); }
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-app.UseAuthentication(); // Add Auth middleware
-app.UseAuthorization(); // Add Authorization middleware
+app.UseAuthentication();
+app.UseAuthorization(); 
 app.MapRazorPages();
 
 // --- Seed Roles & Initial Admin ---

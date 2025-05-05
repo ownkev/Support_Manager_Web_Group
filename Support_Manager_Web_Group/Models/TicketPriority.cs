@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 
-namespace Support_Manager_Web_Group.Models // Ensure namespace matches
+namespace Support_Manager_Web_Group.Models 
 {
     public class TicketPriority
     {

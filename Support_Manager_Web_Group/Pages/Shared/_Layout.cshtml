@@ -31,7 +31,7 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-page="/Tickets/Create">Submit Ticket</a>
                             </li>
-                            @* KB/Reports links excluded for simplicity *@
+                            
                         }
                     </ul>
                     @* Login/Register/Manage/Logout links are handled here *@
@@ -42,13 +42,13 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
-            @RenderBody() @* Content from specific pages goes here *@
+            @RenderBody()
         </main>
     </div>
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; @DateTime.Now.Year - Support_Manager_Web_Group - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; @DateTime.Now.Year - Support Manager - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
 

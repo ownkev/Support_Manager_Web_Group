@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Sockets;
 
-namespace Support_Manager_Web_Group.Models // Ensure namespace matches
+namespace Support_Manager_Web_Group.Models 
 {
     public class TicketStatus
     {
