@@ -60,7 +60,6 @@ namespace Support_Manager_Web_Group.Models // Ensure namespace matches
 
         // *** ADDED Navigation Property for Comments ***
         public virtual ICollection<TicketComment> Comments { get; set; }
-        // ********************************************
 
         public Ticket()
         {
