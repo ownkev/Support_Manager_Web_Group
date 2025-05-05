@@ -49,10 +49,9 @@ namespace Support_Manager_Web_Group.Pages.Tickets
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error saving comment for Ticket {id} by User {userId}");
-                ModelState.AddModelError(string.Empty, "An error occurred while saving your comment.");
-                await ReloadDataForPageAsync(id.Value); // Reload data before showing page again
-                return Page();
+                _logger.LogError(ex, $"Error loading ticket details for ID {id}");
+                TempData["ErrorMessage"] = "Error loading ticket details.";
+                return RedirectToPage("./Index");
             }
         }
     }

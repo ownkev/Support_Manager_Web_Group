@@ -16,7 +16,7 @@ else
         <h1>Details for Ticket #@Model.Ticket.TicketID</h1>
         <div>
             @if (Model.CanPerformActions)
-            {
+            { // Show Edit button only if user is allowed
                 <a asp-page="./Edit" asp-route-id="@Model.Ticket.TicketID" class="btn btn-primary me-2"><i class="fas fa-edit"></i> Edit</a>
             }
             <a asp-page="./Index" class="btn btn-secondary"><i class="fas fa-list"></i> Back to List</a>
@@ -51,36 +51,10 @@ else
             </dl>
         </div>
     </div>
-
-    @* --- Comments Section --- *@
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="card shadow-sm">
-                <div class="card-header">
-                    <h5 class="mb-0">Comments (@Model.Comments.Count)</h5>
-                </div>
-                @* Display Existing Comments *@
-                <div class="card-body comment-section p-3">
-                    @if (!Model.Comments.Any())
-                    {
-                        <p class="text-muted fst-italic mb-0">No comments have been added yet.</p>
-                    }
-                    else
-                    {
-                        @foreach (var comment in Model.Comments)
-                        {
-                            <div class="comment mb-3 pb-2 border-bottom">
-                                <p class="comment-text mb-1">@Html.DisplayFor(m => comment.CommentText)</p>
-                                <small class="text-muted comment-meta">
-                                    By @(comment.User?.FullName ?? "Unknown User") on @comment.DateCommented.ToString("yyyy-MM-dd HH:mm")
-                                </small>
-                            </div>
-                        }
+    @* Comments/Attachments excluded for simplicity *@
+}
 
 @functions {
     private string GetStatusBadgeClass(string statusName) { return statusName switch { "Open" => "bg-primary text-white", "Assigned" => "bg-info text-dark", "In Progress" => "bg-warning text-dark", "Pending User Response" => "bg-secondary text-white", "Resolved" => "bg-success text-white", "Closed" => "bg-dark text-white", _ => "bg-light text-dark" }; }
     private string GetPriorityBadgeClass(string priorityName) { return priorityName switch { "Low" => "bg-success text-white", "Medium" => "bg-warning text-dark", "High" => "bg-danger text-white", "Critical" => "bg-danger border border-dark fw-bold", _ => "bg-light text-dark" }; }
 }
-
-@* Add CSS to site.css: .comment-section { max-height: 400px; ... } etc. *@
-

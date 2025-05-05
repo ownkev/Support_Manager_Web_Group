@@ -1,64 +1,85 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using Support_Manager_Web_Group.Data;
+using Support_Manager_Web_Group.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 using Microsoft.Extensions.Logging;
-using System; // Added for DateTime
-using System.Threading.Tasks; // Added for Task
-using Microsoft.AspNetCore.Identity; // Added for UserManager, SignInManager
-using Support_Manager_Web_Group.Models; // Added for ApplicationUser, Ticket
-using Support_Manager_Web_Group.Data; // Added for ApplicationDbContext
-using Microsoft.EntityFrameworkCore; // Added for EF Core functions like CountAsync, Where
-using System.Linq; // Added for LINQ methods like Where
+using Microsoft.AspNetCore.Mvc;
 
-namespace Support_Manager_Web_Group.Pages
+namespace Support_Manager_Web_Group.Pages.Tickets
 {
-    // No [Authorize] attribute needed here if we want logged-out users to see a version
+    [Authorize]
     public class IndexModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager; // To get current user
-        private readonly ApplicationDbContext _context; // To query tickets
+        private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ILogger<IndexModel> _logger;
 
-        // Property to hold the count of open tickets for the logged-in user
-        public int OpenTicketCount { get; private set; } = 0; // Default to 0
+        public IndexModel(ApplicationDbContext context, UserManager<ApplicationUser> userManager, ILogger<IndexModel> logger)
+        { _context = context; _userManager = userManager; _logger = logger; }
 
-        // Inject necessary services
-        public IndexModel(ILogger<IndexModel> logger, UserManager<ApplicationUser> userManager, ApplicationDbContext context)
-        {
-            _logger = logger;
-            _userManager = userManager; // Store injected UserManager
-            _context = context;         // Store injected DbContext
-        }
+        public IList<Ticket> Tickets { get; set; } = new List<Ticket>();
+        public bool IsITStaff { get; set; }
+        public bool IsITManager { get; set; } // Added for Delete button logic
 
         public async Task OnGetAsync()
         {
-            _logger.LogInformation("Home page visited at {Time}", DateTime.UtcNow);
+            var userId = _userManager.GetUserId(User);
+            if (userId == null) return;
 
-                    try
-                    {
-                        // Define which statuses are considered "Open" (adjust IDs if needed)
-                        var openStatusIDs = new List<int> { 1, 2, 3, 4 }; // e.g., Open, Assigned, In Progress, Pending User
+            IsITStaff = User.IsInRole("IT Support") || User.IsInRole("IT Manager");
+            IsITManager = User.IsInRole("IT Manager"); // Check manager role specifically
+            _logger.LogInformation($"Loading tickets for User {userId}, IsITStaff: {IsITStaff}, IsManager: {IsITManager}");
 
-                        // Query the database for the count of open tickets submitted by this user
-                        OpenTicketCount = await _context.Tickets
-                            .Where(t => t.SubmittedByUserID == userId && // Match the user ID
-                                        openStatusIDs.Contains(t.StatusID)) // Match open statuses
-                            .CountAsync(); // Get the count efficiently
-
-                        _logger.LogInformation("User {UserId} has {Count} open tickets.", userId, OpenTicketCount);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError(ex, "Error retrieving open ticket count for User ID {UserId}", userId);
-                        // Keep OpenTicketCount at 0 if there's an error
-                        OpenTicketCount = 0;
-                        // Optionally display an error message to the user via TempData or ViewData
-                        // TempData["ErrorMessage"] = "Could not retrieve ticket count.";
-                    }
-                }
-            }
-            else
+            try
             {
-                // User is not logged in, count remains 0
-                OpenTicketCount = 0;
+                IQueryable<Ticket> ticketsQuery = _context.Tickets
+                                                    .Include(t => t.Status)
+                                                    .Include(t => t.Priority)
+                                                    .Include(t => t.Submitter)
+                                                    .Include(t => t.Assignee);
+
+                if (!IsITStaff) // Filter for Employees
+                {
+                    ticketsQuery = ticketsQuery.Where(t => t.SubmittedByUserID == userId);
+                }
+                // TODO: Add filtering later
+
+                Tickets = await ticketsQuery.OrderByDescending(t => t.DateSubmitted).ToListAsync();
+                _logger.LogInformation($"Loaded {Tickets.Count} tickets.");
             }
+            catch (Exception ex) { _logger.LogError(ex, "Error retrieving tickets for User ID {UserId}", userId); TempData["ErrorMessage"] = "Could not load tickets."; }
+        }
+
+        // Delete Handler (Only IT Manager)
+        [Authorize(Roles = "IT Manager")]
+        public async Task<IActionResult> OnPostDeleteAsync(int? id)
+        {
+            if (id == null) return NotFound("Ticket ID missing.");
+
+            var currentUserId = _userManager.GetUserId(User);
+            _logger.LogWarning($"User {currentUserId} attempting deletion of TicketID: {id}");
+
+            var ticketToDelete = await _context.Tickets.FindAsync(id);
+            if (ticketToDelete == null) { TempData["ErrorMessage"] = $"Ticket #{id} not found."; return RedirectToPage("./Index"); }
+
+            try
+            {
+                _context.Tickets.Remove(ticketToDelete);
+                await _context.SaveChangesAsync();
+                _logger.LogInformation($"Ticket ID {id} deleted by User: {currentUserId}");
+                TempData["SuccessMessage"] = $"Ticket #{id} deleted successfully.";
+                // TODO: Audit Log
+            }
+            catch (DbUpdateException ex) { _logger.LogError(ex, $"Error deleting TicketID: {id}"); TempData["ErrorMessage"] = $"Error deleting ticket #{id}. Check related data."; }
+            catch (Exception ex) { _logger.LogError(ex, $"Unexpected error deleting TicketID: {id}"); TempData["ErrorMessage"] = "Unexpected error deleting ticket."; }
+
+            return RedirectToPage("./Index");
         }
     }
 }

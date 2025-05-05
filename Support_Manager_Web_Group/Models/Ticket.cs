@@ -18,7 +18,9 @@ namespace Support_Manager_Web_Group.Models // Ensure namespace matches
         [DataType(DataType.MultilineText)]
         public string Description { get; set; }
 
+        // Foreign Key to ApplicationUser (string Id)
         [Required]
+        [Display(Name = "Submitted By")]
         public string SubmittedByUserID { get; set; }
 
         [Display(Name = "Assigned To")]
@@ -46,10 +48,13 @@ namespace Support_Manager_Web_Group.Models // Ensure namespace matches
         // --- Navigation Properties ---
         [ForeignKey("SubmittedByUserID")]
         public virtual ApplicationUser Submitter { get; set; }
+
         [ForeignKey("AssignedToUserID")]
         public virtual ApplicationUser Assignee { get; set; }
+
         [ForeignKey("StatusID")]
         public virtual TicketStatus Status { get; set; }
+
         [ForeignKey("PriorityID")]
         public virtual TicketPriority Priority { get; set; }
 

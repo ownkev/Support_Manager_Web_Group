@@ -17,6 +17,7 @@ namespace Support_Manager_Web_Group.Models // Ensure namespace matches project n
         [Display(Name = "Employee ID")]
         public string? EmployeeID { get; set; } // Optional
 
+        // Navigation properties needed for EF Core relationships
         [InverseProperty("Submitter")]
         public virtual ICollection<Ticket> SubmittedTickets { get; set; } = new HashSet<Ticket>();
 
