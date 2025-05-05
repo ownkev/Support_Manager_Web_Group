@@ -1,0 +1,60 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4 mb-4">Support Manager</h1>
+
+    @* Check if the user is authenticated *@
+    @if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        <p class="lead mb-3">Welcome back! What would you like to do?</p>
+
+        @* --- Display Open Ticket Count --- *@
+        <div class="alert alert-info d-inline-block mb-4" role="alert">
+            @* Use d-inline-block to size alert to content *@
+            You currently have <strong>@Model.OpenTicketCount</strong> open support ticket(s).
+        </div>
+        @* --------------------------------- *@
+
+        @* --- Buttons for Logged-in Users --- *@
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-4">
+                <div class="d-grid gap-3">
+
+                    @* Submit New Ticket Button *@
+                    <a asp-page="/Tickets/Create" class="btn btn-primary btn-lg">
+                        <i class="fas fa-plus-circle me-2"></i> Submit a New Ticket
+                    </a>
+
+                    @* View My Tickets Button *@
+                    <a asp-page="/Tickets/Index" class="btn btn-info btn-lg text-dark">
+                        <i class="fas fa-ticket-alt me-2"></i> View My Tickets
+                    </a>
+
+                    @* Knowledge Base Button (Optional - Add if implemented) *@
+                    @*
+                    <a asp-page="/KnowledgeBase/Index" class="btn btn-outline-secondary btn-lg">
+                        <i class="fas fa-book me-2"></i> Search Knowledge Base
+                    </a>
+                    *@
+
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        @* --- Content for Logged-out Users --- *@
+        <p class="lead mb-5">Your central hub for IT support requests.</p>
+        <div class="alert alert-secondary" role="alert">
+            Please <a asp-area="Identity" asp-page="/Account/Login" class="alert-link">Log In</a> or
+            <a asp-area="Identity" asp-page="/Account/Register" class="alert-link">Register</a> to manage support tickets.
+        </div>
+    }
+
+</div>
+
+@* Ensure Font Awesome is linked in _Layout.cshtml if using icons *@

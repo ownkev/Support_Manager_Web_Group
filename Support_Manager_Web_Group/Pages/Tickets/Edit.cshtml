@@ -1,0 +1,105 @@
+﻿@page "{id:int}"
+@model Support_Manager_Web_Group.Pages.Tickets.EditModel
+@{
+    ViewData["Title"] = "Edit Ticket #" + Model.Ticket?.TicketID;
+}
+
+<h1>@ViewData["Title"]</h1>
+<h4>@Model.OriginalTitle</h4>
+<hr />
+
+@if (Model.Ticket == null) { /* Handle Not Found */ }
+else
+{
+    <div class="row">
+        <div class="col-md-8">
+            <form method="post">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                @* Hidden fields *@
+                <input type="hidden" asp-for="Ticket.TicketID" />
+                <input type="hidden" asp-for="Ticket.SubmittedByUserID" />
+                <input type="hidden" asp-for="Ticket.DateSubmitted" />
+                <input type="hidden" asp-for="Ticket.DateResolved" />
+                <input type="hidden" asp-for="OriginalTitle" />
+                <input type="hidden" asp-for="OriginalDescription" />
+
+                @* --- Display Title/Desc (Read-Only) --- *@
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Title</label>
+                    <p class="form-control-plaintext">@Model.OriginalTitle</p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Description</label>
+                    <div class="description-box-readonly">@Model.OriginalDescription</div>
+                </div>
+
+                @* --- Editable Fields --- *@
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Ticket.Category" class="form-label"></label>
+                        <select asp-for="Ticket.Category" class="form-select" asp-items="Model.CategoryList">
+                            <option value="">-- Select Category --</option>
+                        </select>
+                        <span asp-validation-for="Ticket.Category" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Ticket.PriorityID" class="form-label">Priority</label> @* No longer required *@
+                        <select asp-for="Ticket.PriorityID" class="form-select" asp-items="Model.PriorityList">
+                            <option value="0">-- Select Priority --</option> @* Ensure value matches default in PageModel *@
+                        </select>
+                        <span asp-validation-for="Ticket.PriorityID" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Ticket.StatusID" class="form-label required">Status</label>
+                        <select asp-for="Ticket.StatusID" class="form-select" asp-items="Model.StatusList"></select>
+                        <span asp-validation-for="Ticket.StatusID" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Ticket.AssignedToUserID" class="form-label">Assign To</label>
+                        <select asp-for="Ticket.AssignedToUserID" class="form-select" asp-items="Model.AssigneeList"></select>
+                        <span asp-validation-for="Ticket.AssignedToUserID" class="text-danger"></span>
+                    </div>
+                </div>
+
+                @* --- ADDED Comment Field --- *@
+                <div class="mb-3">
+                    <label asp-for="NewCommentText" class="form-label"></label>
+                    <textarea asp-for="NewCommentText" class="form-control" rows="4" placeholder="Add an optional comment about the changes made..."></textarea>
+                    @* No validation span needed for optional comment *@
+                </div>
+                @* ------------------------- *@
+
+                @* Submit Button *@
+                <div class="mb-3 pt-2">
+                    <button type="submit" class="btn btn-success">Save Changes</button>
+                    <a asp-page="./Details" asp-route-id="@Model.Ticket.TicketID" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+        @* Read-only info column *@
+        <div class="col-md-4">
+            <h5>Ticket Info</h5>
+            <dl class="details-list">
+                <dt>Submitted By</dt>
+                <dd>@Model.SubmitterInfo</dd>
+                <dt>Date Submitted</dt>
+                <dd>@Model.Ticket.DateSubmitted.ToString("g")</dd>
+                @if (Model.Ticket.DateResolved.HasValue)
+                {
+                    <dt>Date Resolved</dt>
+                    <dd>@Model.Ticket.DateResolved.Value.ToString("g")</dd>
+                }
+            </dl>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,160 @@
+/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+}
+
+a {
+    color: #0077cc;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    background-color: #f8f9fa; /* Light grey background */
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center footer text */
+    background-color: #ffffff; /* White footer */
+}
+
+
+/* --- Custom Styles for Support Manager --- */
+
+/* Required field indicator */
+label.required::after {
+    content: " *";
+    color: #dc3545; /* Bootstrap danger color */
+    font-weight: bold;
+}
+
+/* Style for description box in details view */
+.description-box {
+    white-space: pre-wrap; /* Preserve whitespace and wrap lines */
+    word-wrap: break-word;
+    font-family: inherit; /* Use default form font */
+    background-color: #ffffff; /* White background */
+    border: 1px solid #dee2e6; /* Bootstrap standard border */
+    padding: 10px 15px;
+    border-radius: 0.25rem; /* Bootstrap standard radius */
+    max-height: 350px; /* Limit height */
+    overflow-y: auto; /* Add scrollbar if needed */
+    line-height: 1.6; /* Improve readability */
+}
+
+/* Style for definition lists used in details view */
+.details-list dt {
+    font-weight: 600; /* Bold term */
+    padding-top: 0.4rem;
+    color: #495057; /* Darker grey */
+}
+
+.details-list dd {
+    padding-top: 0.4rem;
+    margin-bottom: 0.6rem; /* Space below definition */
+}
+
+/* Table styling */
+.table {
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Subtle shadow */
+}
+
+    .table th {
+        font-weight: 600; /* Bolder headers */
+    }
+
+    .table td .btn {
+        margin-right: 0.25rem; /* Space between action buttons */
+    }
+
+/* Badge styling */
+.badge {
+    font-size: 0.85em;
+    padding: 0.4em 0.6em;
+    font-weight: 500;
+}
+    /* Ensure text is readable on badges */
+    .badge.bg-primary, .badge.bg-secondary, .badge.bg-success, .badge.bg-danger, .badge.bg-dark {
+        color: white;
+    }
+
+    .badge.bg-info, .badge.bg-warning, .badge.bg-light {
+        color: #212529;
+    }
+    /* Dark text for light backgrounds */
+    .badge.border-dark {
+        border: 2px solid #212529 !important;
+    }
+/* Make critical border stand out */
+
+/* Style for inline delete form */
+td form[style*="display: inline"] {
+    margin: 0;
+    padding: 0;
+}
+
+/* Adjustments for smaller screens if needed */
+@media (max-width: 767.98px) {
+    .details-list dt, .details-list dd {
+        padding-top: 0.2rem;
+        margin-bottom: 0.4rem;
+    }
+}
