@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System; // Added for DateTime
@@ -28,17 +27,10 @@ namespace Support_Manager_Web_Group.Pages
             _context = context;         // Store injected DbContext
         }
 
-        // OnGet is called when the page is requested
         public async Task OnGetAsync()
         {
             _logger.LogInformation("Home page visited at {Time}", DateTime.UtcNow);
 
-            // Check if the user is logged in
-            if (User.Identity != null && User.Identity.IsAuthenticated)
-            {
-                var userId = _userManager.GetUserId(User); // Get the current user's string ID
-                if (userId != null)
-                {
                     try
                     {
                         // Define which statuses are considered "Open" (adjust IDs if needed)

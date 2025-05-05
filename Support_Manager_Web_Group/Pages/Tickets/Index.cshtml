@@ -10,26 +10,13 @@
     @* Check if the user is authenticated *@
     @if (User.Identity != null && User.Identity.IsAuthenticated)
     {
-        <p class="lead mb-3">Welcome back! What would you like to do?</p>
-
-        @* --- Display Open Ticket Count --- *@
-        <div class="alert alert-info d-inline-block mb-4" role="alert">
-            @* Use d-inline-block to size alert to content *@
-            You currently have <strong>@Model.OpenTicketCount</strong> open support ticket(s).
-        </div>
-        @* --------------------------------- *@
-
         @* --- Buttons for Logged-in Users --- *@
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-4">
                 <div class="d-grid gap-3">
-
-                    @* Submit New Ticket Button *@
                     <a asp-page="/Tickets/Create" class="btn btn-primary btn-lg">
                         <i class="fas fa-plus-circle me-2"></i> Submit a New Ticket
                     </a>
-
-                    @* View My Tickets Button *@
                     <a asp-page="/Tickets/Index" class="btn btn-info btn-lg text-dark">
                         <i class="fas fa-ticket-alt me-2"></i> View My Tickets
                     </a>

@@ -23,8 +23,6 @@ else
         </div>
     </div>
     <hr />
-
-    @* --- Ticket Details Row --- *@
     <div class="row">
         <div class="col-md-7">
             <h4>@Html.DisplayFor(model => model.Ticket.Title)</h4>
@@ -78,48 +76,7 @@ else
                                 </small>
                             </div>
                         }
-                    }
-                </div>
-                @* Add New Comment Form (Show only if user CanComment) *@
-                @if (Model.CanComment)
-                {
-                    <div class="card-footer bg-light">
-                        <form method="post" asp-page-handler="AddComment" asp-route-id="@Model.Ticket.TicketID">
-                            @Html.AntiForgeryToken()
-                            @* Display validation errors specific to the comment form *@
-                            <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
-                            <div class="mb-2">
-                                <label asp-for="NewCommentText" class="form-label fw-semibold"></label>
-                                <textarea asp-for="NewCommentText" class="form-control form-control-sm" rows="3" placeholder="Enter your comment..."></textarea>
-                                <span asp-validation-for="NewCommentText" class="text-danger"></span>
-                            </div>
-                            <button type="submit" class="btn btn-sm btn-outline-primary">
-                                <i class="fas fa-plus"></i> Add Comment
-                            </button>
-                        </form>
-                    </div>
-                }
-            </div>
-        </div>
-    </div>
 
-    @* Attachments section excluded for simplicity *@
-
-    @* Delete Button Form (Keep if needed) *@
-    @if (User.IsInRole("IT Manager"))
-    {
-        <div class="mt-4">
-            <form method="post" asp-page-handler="Delete" asp-route-id="@Model.Ticket.TicketID" onsubmit="return confirm('Are you sure you want to permanently delete Ticket #@Model.Ticket.TicketID?');" style="display: inline;">
-                @Html.AntiForgeryToken()
-                <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete Ticket</button>
-            </form>
-        </div>
-    }
-
-} @* End of else block where Model.Ticket is not null *@
-
-
-@* Badge Helper Functions (Keep from previous response) *@
 @functions {
     private string GetStatusBadgeClass(string statusName) { return statusName switch { "Open" => "bg-primary text-white", "Assigned" => "bg-info text-dark", "In Progress" => "bg-warning text-dark", "Pending User Response" => "bg-secondary text-white", "Resolved" => "bg-success text-white", "Closed" => "bg-dark text-white", _ => "bg-light text-dark" }; }
     private string GetPriorityBadgeClass(string priorityName) { return priorityName switch { "Low" => "bg-success text-white", "Medium" => "bg-warning text-dark", "High" => "bg-danger text-white", "Critical" => "bg-danger border border-dark fw-bold", _ => "bg-light text-dark" }; }
