@@ -38,6 +38,7 @@ namespace Support_Manager_Web_Group.Pages.Tickets
 
                 if (Ticket == null) { _logger.LogWarning($"Ticket ID {id} not found."); return NotFound(); }
 
+                // Authorization Check
                 var currentUserId = _userManager.GetUserId(User);
                 bool isITStaff = User.IsInRole("IT Support") || User.IsInRole("IT Manager");
                 if (!isITStaff && Ticket.SubmittedByUserID != currentUserId) { _logger.LogWarning($"User {currentUserId} forbidden from ticket {id}."); return Forbid(); }

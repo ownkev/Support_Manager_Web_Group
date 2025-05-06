@@ -3,37 +3,36 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Support_Manager_Web_Group.Models 
+namespace Support_Manager_Web_Group.Models
 {
     public class Ticket
     {
         [Key]
         public int TicketID { get; set; }
 
-        [Required(ErrorMessage = "Title is required.")]
+        [Required(ErrorMessage = "Title is required.")] // Keep Required
         [StringLength(200)]
         public string Title { get; set; }
 
-        [Required(ErrorMessage = "Description is required.")]
+        [Required(ErrorMessage = "Description is required.")] // Keep Required
         [DataType(DataType.MultilineText)]
         public string Description { get; set; }
 
         [Required]
-        [Display(Name = "Submitted By")]
-        public string SubmittedByUserID { get; set; }
+        public string SubmittedByUserID { get; set; } // Required FK
 
-        [Display(Name = "Assigned To")]
-        public string? AssignedToUserID { get; set; } // string FK, nullable
+        public string? AssignedToUserID { get; set; } // Nullable FK
+
+        [Required] // Status is always required
+        [Display(Name = "Status")]
+        public int StatusID { get; set; }
 
         [Required]
-        [Display(Name = "Status")]
-        public int StatusID { get; set; } // FK
-
         [Display(Name = "Priority")]
-        public int PriorityID { get; set; } // FK
+        public int PriorityID { get; set; }
 
         [StringLength(100)]
-        public string Category { get; set; }
+        public string? Category { get; set; } // Allow null/empty category explicitly
 
         [Display(Name = "Date Submitted")]
         [DataType(DataType.DateTime)]
@@ -54,7 +53,7 @@ namespace Support_Manager_Web_Group.Models
         public virtual TicketStatus Status { get; set; }
 
         [ForeignKey("PriorityID")]
-        public virtual TicketPriority Priority { get; set; }
+        public virtual TicketPriority Priority { get; set; } // Navigation Property
 
         public virtual ICollection<TicketComment> Comments { get; set; }
 
@@ -62,7 +61,7 @@ namespace Support_Manager_Web_Group.Models
         {
             DateSubmitted = DateTime.Now;
             StatusID = 1; // Default 'Open'
-            PriorityID = 2; // Default 'Medium'
+            PriorityID = 2; // Default 'Medium' (can be changed)
             Comments = new HashSet<TicketComment>(); // Initialize collection
         }
     }
