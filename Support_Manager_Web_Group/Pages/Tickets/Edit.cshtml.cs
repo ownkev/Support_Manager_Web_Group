@@ -29,7 +29,6 @@ namespace Support_Manager_Web_Group.Pages.Tickets
         [BindProperty]
         public Ticket Ticket { get; set; } = default!;
 
-        // Property for adding a comment during edit
         [BindProperty]
         [DataType(DataType.MultilineText)]
         [Display(Name = "Add Comment (Optional)")]
@@ -58,7 +57,6 @@ namespace Support_Manager_Web_Group.Pages.Tickets
             if (Ticket == null) { return NotFound(); }
             if (Ticket.StatusID == 6) { TempData["ErrorMessage"] = "Cannot edit a closed ticket."; return RedirectToPage("./Details", new { id = Ticket.TicketID }); }
 
-            // Store read-only info
             OriginalTitle = Ticket.Title;
             OriginalDescription = Ticket.Description;
             SubmitterInfo = $"{Ticket.Submitter?.FullName} ({Ticket.Submitter?.Email})";
@@ -110,7 +108,6 @@ namespace Support_Manager_Web_Group.Pages.Tickets
 
                 // Add Comment if provided
                 bool commentAdded = false;
-                string commentAuditDetails = "";
                 if (!string.IsNullOrWhiteSpace(NewCommentText))
                 {
                     var userId = _userManager.GetUserId(User);
@@ -150,7 +147,6 @@ namespace Support_Manager_Web_Group.Pages.Tickets
             return Page();
         }
 
-        // Helper to reload dropdowns and non-posted data on error
         private async Task ReloadDataForErrorAsync()
         {
             var originalTicket = await _context.Tickets.AsNoTracking().Include(t => t.Submitter).FirstOrDefaultAsync(t => t.TicketID == Ticket.TicketID);
@@ -163,7 +159,6 @@ namespace Support_Manager_Web_Group.Pages.Tickets
             await PopulateDropdownsAsync(Ticket.StatusID, Ticket.PriorityID, Ticket.AssignedToUserID, Ticket.Category);
         }
 
-        // Helper to populate dropdowns
         private async Task PopulateDropdownsAsync(int currentStatusId, int currentPriorityId, string currentAssigneeId, string currentCategory)
         {
             try

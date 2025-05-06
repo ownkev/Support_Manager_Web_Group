@@ -14,10 +14,6 @@ namespace Support_Manager_Web_Group.Data
         public DbSet<TicketPriority> TicketPriorities { get; set; }
         // KnowledgeBase excluded
 
-        // *** ADDED DbSet for TicketComments ***
-        public DbSet<TicketComment> TicketComments { get; set; }
-        // ************************************
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder); // Identity config
@@ -45,7 +41,6 @@ namespace Support_Manager_Web_Group.Data
                       .OnDelete(DeleteBehavior.ClientSetNull); // Set UserID to null if user deleted (requires UserID column to be nullable in DB if user deletion is allowed)
                                                                // Or use DeleteBehavior.Restrict to prevent user deletion if they have comments
             });
-            // *****************************************
 
             // Seed Statuses
             modelBuilder.Entity<TicketStatus>().HasData( /* ... as before ... */ );

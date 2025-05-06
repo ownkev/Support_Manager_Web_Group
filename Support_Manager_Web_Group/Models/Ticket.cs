@@ -18,7 +18,6 @@ namespace Support_Manager_Web_Group.Models
         [DataType(DataType.MultilineText)]
         public string Description { get; set; }
 
-        // Foreign Key to ApplicationUser (string Id)
         [Required]
         [Display(Name = "Submitted By")]
         public string SubmittedByUserID { get; set; }
@@ -30,7 +29,6 @@ namespace Support_Manager_Web_Group.Models
         [Display(Name = "Status")]
         public int StatusID { get; set; } // FK
 
-        [Required] // Still required on model, but maybe not on Edit form input
         [Display(Name = "Priority")]
         public int PriorityID { get; set; } // FK
 
@@ -58,7 +56,6 @@ namespace Support_Manager_Web_Group.Models
         [ForeignKey("PriorityID")]
         public virtual TicketPriority Priority { get; set; }
 
-        // ***Navigation Property for Comments ***
         public virtual ICollection<TicketComment> Comments { get; set; }
 
         public Ticket()
